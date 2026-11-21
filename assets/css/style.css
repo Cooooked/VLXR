@@ -642,3 +642,12 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .chart .bars{display:flex;align-items:flex-end;gap:4px;height:90px;border-bottom:1px solid #262933;padding-bottom:0}
 .chart .bars i{flex:1;background:#3F7BFF;opacity:.75;border-radius:2px 2px 0 0;min-height:4px}
 .chart .bars.flat i{background:#3DD68C}
+
+/* ---------- faq ---------- */
+.faq-list{max-width:760px}
+.faq-item{border:1px solid #262933;border-radius:var(--radius);margin-bottom:10px;background:rgba(14,15,19,.6);overflow:hidden}
+.faq-item summary{cursor:pointer;padding:16px 20px;font-weight:600;font-size:15px;color:#ECEDF1;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-item summary::after{content:"+";font-family:Consolas,monospace;color:#3F7BFF;font-size:18px;transition:transform .2s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin:0;padding:0 20px 18px;color:#8C90A0;font-size:14.5px;line-height:1.6}
