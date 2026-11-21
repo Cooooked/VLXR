@@ -690,3 +690,10 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .app-btn:hover{background:rgba(255,255,255,.12);border-color:#3a4a66}
 .app-btn:active{transform:translateY(1px)}
 .app-btn.is-done{color:#7fd18b;border-color:#2c5a3a}
+
+/* console theater mode — viewport takes full width */
+.app-window.is-theater .app-body{grid-template-columns:1fr}
+.app-window.is-theater .app-panel{display:none}
+.app-window.is-theater .viewport-frame{max-width:none}
+.app-window.is-theater .metric-strip{grid-template-columns:repeat(7,1fr)}
+@media(max-width:860px){.app-window.is-theater .metric-strip{grid-template-columns:repeat(4,1fr)}}

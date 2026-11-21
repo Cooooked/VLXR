@@ -630,3 +630,16 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     } else fallback();
   });
 })();
+
+/* Console footer — Theater mode widens the simulated headset view. */
+(function () {
+  var btn = document.getElementById("theaterBtn");
+  var win = btn && btn.closest(".app-window");
+  if (!btn || !win) return;
+  btn.addEventListener("click", function () {
+    var on = win.classList.toggle("is-theater");
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.classList.toggle("is-done", on);
+    btn.textContent = on ? "Theater on" : "Theater";
+  });
+})();
