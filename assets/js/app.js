@@ -536,6 +536,29 @@
     });
   });
   document.addEventListener("visibilitychange", syncBars);
+
+  // stats readout jitters gently while the All stats tab is visible
+  var statsTimer = null;
+  var statsPanel = document.querySelector('.diag-panel[data-panel="stats"]');
+  var statVals = statsPanel ? Array.prototype.slice.call(statsPanel.querySelectorAll(".stats-row b")) : [];
+  var statBase = statVals.map(function (b) { return b.textContent; });
+  function statsTick() {
+    statVals.forEach(function (b, i) {
+      var base = statBase[i];
+      var m = base.match(/^([\d.]+)(.*)$/);
+      if (!m) return;
+      var v = parseFloat(m[1]);
+      var jit = (Math.random() * 2 - 1) * Math.max(0.05, v * 0.004);
+      b.textContent = (v + jit).toFixed(m[1].indexOf(".") >= 0 ? m[1].split(".")[1].length : 0) + m[2];
+    });
+  }
+  function syncStats() {
+    var on = statsPanel && statsPanel.classList.contains("is-active") && !document.hidden;
+    if (on && !statsTimer) statsTimer = setInterval(statsTick, 1100);
+    if (!on && statsTimer) { clearInterval(statsTimer); statsTimer = null; }
+  }
+  tabs.forEach(function (t) { t.addEventListener("click", syncStats); });
+  document.addEventListener("visibilitychange", syncStats);
 })();
 
 /* Mobile nav toggle */
