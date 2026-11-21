@@ -226,10 +226,14 @@
         return v === 0 ? "0 (lowest latency)" : v + (v === 1 ? " frame" : " frames");
       });
       Array.prototype.forEach.call(document.getElementById("hzRow").children, function (c) {
-        c.classList.toggle("is-active", +c.dataset.hz === state.hz);
+        var on = +c.dataset.hz === state.hz;
+        c.classList.toggle("is-active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
       });
       Array.prototype.forEach.call(document.getElementById("renderRow").children, function (c) {
-        c.classList.toggle("is-active", +c.dataset.render === state.renderPct);
+        var on = +c.dataset.render === state.renderPct;
+        c.classList.toggle("is-active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
       });
       document.getElementById("budgetNote").textContent = "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
       document.getElementById("statusText").textContent = "Active · Quest connected · " + state.hz + " Hz";
@@ -254,8 +258,11 @@
     renderRow.addEventListener("click", function (e) {
       var b = e.target.closest(".preset"); if (!b) return;
       state.renderPct = +b.dataset.render;
-      Array.prototype.forEach.call(renderRow.children, function (c) { c.classList.remove("is-active"); });
-      b.classList.add("is-active");
+      Array.prototype.forEach.call(renderRow.children, function (c) {
+        var on = c === b;
+        c.classList.toggle("is-active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+      });
       document.getElementById("renderNote").textContent =
         "Render resolution " + state.renderPct + "% — what the game draws before the stream encodes it.";
     });
