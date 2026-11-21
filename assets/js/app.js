@@ -686,3 +686,21 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     }, 650);
   });
 })();
+
+/* Console keyboard shortcuts: 1-3 select quick setups, T toggles theater. */
+(function () {
+  "use strict";
+  var setups = { "1": "race", "2": "desktop", "3": "media" };
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable)) return;
+    if (setups[e.key]) {
+      var b = document.querySelector('#setupRow .preset[data-setup="' + setups[e.key] + '"]');
+      if (b) { b.click(); e.preventDefault(); }
+    } else if (e.key === "t" || e.key === "T") {
+      var tb = document.getElementById("theaterBtn");
+      if (tb) { tb.click(); e.preventDefault(); }
+    }
+  });
+})();
