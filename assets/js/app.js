@@ -543,6 +543,16 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
       row.classList.add("is-sel");
     });
   });
+  var exit = document.querySelector(".menu-row.exit");
+  var hint = document.querySelector(".menu-mock .menu-hint");
+  if (exit && hint) {
+    var baseHint = hint.textContent;
+    exit.addEventListener("click", function () {
+      hint.textContent = "menu closed — double-tap the menu button to reopen";
+      exit.classList.add("flash");
+      setTimeout(function () { exit.classList.remove("flash"); hint.textContent = baseHint; }, 2200);
+    });
+  }
 })();
 
 /* Telemetry — generate + download a sample stats.csv client-side. */
