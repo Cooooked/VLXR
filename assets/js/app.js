@@ -412,9 +412,11 @@
       a.download = "vlxr-screenshot.png";
       document.body.appendChild(a); a.click();
       setTimeout(function () { a.remove(); }, 100);
+      var msg = document.getElementById("appMsg");
       btn.classList.add("is-done");
       btn.textContent = "Saved";
-      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Screenshot"; }, 1600);
+      if (msg) msg.textContent = "Screenshot saved to Pictures";
+      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Screenshot"; if (msg) msg.textContent = ""; }, 1600);
     } catch (e) { /* canvas tainted or unsupported — leave button as-is */ }
   });
 })();
@@ -712,10 +714,12 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
       "cooooked.github.io/VLXR"
     ];
     var text = lines.join("\n");
+    var msg = document.getElementById("appMsg");
     function done() {
       btn.classList.add("is-done");
       btn.textContent = "Copied";
-      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Copy config"; }, 1600);
+      if (msg) msg.textContent = "Config copied to clipboard";
+      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Copy config"; if (msg) msg.textContent = ""; }, 1600);
     }
     function fallback() {
       var ta = document.createElement("textarea");
