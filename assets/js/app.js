@@ -504,3 +504,23 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     chip.setAttribute("aria-pressed", on ? "false" : "true");
   });
 });
+
+/* In-headset menu mock — click rows to cycle values (illustrates live apply). */
+(function () {
+  var rows = document.querySelectorAll(".menu-row[data-opt]");
+  rows.forEach(function (row) {
+    row.addEventListener("click", function () {
+      var opts = row.dataset.opt.split("|");
+      var idx = (parseInt(row.dataset.idx, 10) + 1) % opts.length;
+      row.dataset.idx = idx;
+      var val = opts[idx];
+      var labels = row.dataset.labels ? row.dataset.labels.split("|") : null;
+      row.querySelector("b").textContent = labels ? labels[idx] : val + (row.dataset.unit || "");
+      row.classList.add("flash");
+      setTimeout(function () { row.classList.remove("flash"); }, 350);
+      // move selection like a stick would
+      rows.forEach(function (r) { r.classList.remove("is-sel"); });
+      row.classList.add("is-sel");
+    });
+  });
+})();

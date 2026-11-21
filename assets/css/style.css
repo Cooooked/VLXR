@@ -657,3 +657,9 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .panel-chip[aria-pressed="false"]{opacity:.28;border-style:dashed}
 .panel-chip[aria-pressed="false"]::after{content:" · hidden";font-size:.85em;opacity:.8}
 .void-hint{margin:14px 0 0;text-align:center}
+
+/* in-headset menu — interactive rows */
+.menu-row{cursor:pointer;transition:background .12s}
+.menu-row:hover{background:rgba(63,123,255,.08)}
+.menu-row.is-sel{background:rgba(63,123,255,.14);box-shadow:inset 2px 0 0 #3F7BFF}
+.menu-row.flash b{color:#3DD68C}
