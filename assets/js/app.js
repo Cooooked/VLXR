@@ -317,3 +317,83 @@
 
   requestAnimationFrame(frame);
 })();
+
+/* VLXR hero — PC -> headset stream illustration.
+   Independent browser animation; no application code or internals. */
+(function () {
+  "use strict";
+  var cv = document.getElementById("heroStream");
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext("2d");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var w = 0, h = 0, raf = 0, t = 0;
+  var packets = [];
+  for (var i = 0; i < 26; i++) packets.push({ p: Math.random(), sp: 0.004 + Math.random() * 0.008, lane: (Math.random() - 0.5) * 0.7 });
+
+  function size() {
+    var r = cv.parentElement.getBoundingClientRect();
+    w = cv.width = Math.min(r.width, 1600);
+    h = cv.height = Math.min(r.height, 800);
+  }
+  size();
+  window.addEventListener("resize", size);
+
+  function node(x, y, kind) {
+    ctx.save();
+    ctx.translate(x, y);
+    if (kind === "pc") {
+      ctx.strokeStyle = "rgba(140,144,160,0.8)"; ctx.lineWidth = 2;
+      ctx.strokeRect(-22, -14, 44, 30);
+      ctx.beginPath(); ctx.moveTo(-10, 16); ctx.lineTo(10, 16); ctx.stroke();
+      ctx.fillStyle = "rgba(63,123,255,0.9)";
+      ctx.fillRect(-14, -8, 28, 4);
+    } else {
+      ctx.strokeStyle = "rgba(140,144,160,0.8)"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, 0, 24, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-34, -8); ctx.lineTo(-24, -4); ctx.moveTo(34, -8); ctx.lineTo(24, -4); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    var y = h * 0.42;
+    var x0 = w * 0.30, x1 = w * 0.70;
+    // link path (gentle arc)
+    ctx.strokeStyle = "rgba(63,123,255,0.16)"; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x0, y);
+    ctx.quadraticCurveTo((x0 + x1) / 2, y - h * 0.10, x1, y);
+    ctx.stroke();
+    node(x0, y, "pc"); node(x1, y, "hmd");
+    // packets
+    packets.forEach(function (p) {
+      p.p += p.sp;
+      if (p.p > 1) p.p = 0;
+      var px = x0 + (x1 - x0) * p.p;
+      var py = y - Math.sin(p.p * Math.PI) * h * 0.10 + p.lane * 26 * Math.sin(p.p * Math.PI);
+      var a = Math.sin(p.p * Math.PI);
+      ctx.fillStyle = "rgba(155,187,255," + (0.15 + a * 0.75) + ")";
+      ctx.beginPath(); ctx.arc(px, py, 2.2, 0, Math.PI * 2); ctx.fill();
+    });
+    // Hz readout drifting 144->207
+    var hz = 144 + Math.round(Math.sin(t * 0.4) * 30 + 15);
+    ctx.font = "600 13px Consolas, monospace";
+    ctx.fillStyle = "rgba(155,187,255,0.85)";
+    ctx.textAlign = "center";
+    ctx.fillText(hz + " Hz", (x0 + x1) / 2, y + h * 0.10);
+    ctx.textAlign = "left";
+    t += 0.01;
+    if (!reduced) raf = requestAnimationFrame(draw);
+  }
+  draw();
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) {
+      en.forEach(function (e) {
+        if (e.isIntersecting && !reduced) { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }
+        else cancelAnimationFrame(raf);
+      });
+    }).observe(cv);
+  }
+})();
