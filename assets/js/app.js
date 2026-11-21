@@ -219,7 +219,7 @@
   bind();
 
   /* scroll reveal */
-  var revealEls = document.querySelectorAll(".section-head, .card, .bench-grid, .soon-card");
+  var revealEls = document.querySelectorAll(".section-head, .ledger-row, .bench-grid, .soon-card");
   if ("IntersectionObserver" in window && !reduced) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {

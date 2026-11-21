@@ -10,7 +10,7 @@
 <meta property="og:description" content="Quest 3 PC VR streaming at 72–207 Hz. Closed source. Coming soon.">
 <meta property="og:url" content="https://cooooked.github.io/VLXR/">
 <meta property="og:image" content="https://cooooked.github.io/VLXR/assets/img/og-card.png">
-<meta name="theme-color" content="#0E0F13">
+<meta name="theme-color" content="#08090D">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
@@ -28,11 +28,11 @@
       <img class="brand-logo" src="assets/img/vlxr-logo.svg" alt="VLXR">
     </a>
     <nav class="nav-links" aria-label="Sections">
-      <a href="#bench">The bench</a>
-      <a href="#promise">The promise</a>
-      <a href="#soon">Coming soon</a>
+      <a href="#bench">Bench</a>
+      <a href="#ledger">The product</a>
+      <a href="#soon">Status</a>
     </nav>
-    <a class="btn btn-ghost nav-cta" href="#soon">Notify me</a>
+    <a class="nav-cta" href="#soon">Coming soon</a>
   </div>
 </header>
 
@@ -40,49 +40,60 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-ghost" aria-hidden="true">207</div>
     <div class="hero-grid" aria-hidden="true"></div>
-    <div class="hero-scan" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+
     <div class="hero-inner">
       <img class="hero-logo" src="assets/img/vlxr-logo-450x76.png" alt="VLXR" width="450" height="76">
-      <h1 class="hero-tag">Every frame. Every rate.</h1>
-      <p class="hero-hz">72 — 207 Hz</p>
+      <p class="hero-kicker">Closed-source PC VR streaming · Meta Quest 3 · Windows</p>
+      <h1 class="hero-tag">Every frame.<br>Every rate.</h1>
       <p class="hero-sub">
-        VLXR is a closed-source runtime and streamer for Meta Quest 3 on Windows.
-        It drives your VR games at every refresh rate the headset supports —
-        up to 207 Hz — and holds the frame budget while it does it.
+        Most PC VR stacks cap your headset below what the panel can do.
+        VLXR drives every refresh rate Quest 3 supports — up to 207 Hz —
+        and holds the frame budget while it does it.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#bench">Feel the difference</a>
-        <a class="btn btn-ghost" href="#soon">Coming soon</a>
+        <a class="btn btn-primary" href="#bench">Enter the bench</a>
+        <a class="btn btn-ghost" href="#soon">Status</a>
       </div>
-      <ul class="hero-facts" aria-label="Key facts">
-        <li>Quest 3 · Windows</li>
-        <li>72–207 Hz</li>
-        <li>Closed source</li>
-        <li>In-headset control</li>
-      </ul>
+    </div>
+
+    <div class="hero-foot" aria-hidden="true">
+      <div class="ticker" role="presentation">
+        <div class="ticker-track">
+          <span>72 Hz</span><i></i><span>90 Hz</span><i></i><span>120 Hz</span><i></i>
+          <span>144 Hz</span><i></i><span>180 Hz</span><i></i><span>207 Hz</span><i></i>
+          <span>72 Hz</span><i></i><span>90 Hz</span><i></i><span>120 Hz</span><i></i>
+          <span>144 Hz</span><i></i><span>180 Hz</span><i></i><span>207 Hz</span><i></i>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ============ STREAM BENCH ============ -->
+  <!-- ============ BENCH ============ -->
   <section class="bench section" id="bench">
-    <div class="section-head">
-      <p class="kicker">Interactive</p>
+    <header class="section-head">
+      <p class="kicker"><span class="kicker-num">01</span> Interactive</p>
       <h2>The stream bench</h2>
       <p class="lede">
-        Every refresh rate has a frame-time budget — 6.9 ms at 144 Hz, 4.8 ms at 207 Hz.
-        Codec, resolution and buffering decide whether you hold it. This bench models
-        that trade-off the way VLXR's streamer exposes it: drag the controls and watch
-        the pacing graph. Illustration, not a screenshot.
+        A refresh rate is a promise: 4.8 milliseconds per frame at 207 Hz.
+        Codec, resolution and buffering decide whether you keep it. This bench
+        models that trade-off the way the VLXR streamer exposes it — drag the
+        controls, watch the pacing graph. An illustration, not a screenshot.
       </p>
-    </div>
+    </header>
 
     <div class="bench-grid">
       <div class="bench-stage">
         <div class="viewport-frame">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
           <canvas id="viewport" width="960" height="600" aria-label="Simulated VR stream view with live stats and frame pacing graph"></canvas>
-          <p class="viewport-caption">Illustrative simulation — not the actual application.</p>
+          <div class="viewport-bar">
+            <span class="mono-dim">SIMULATION — NOT THE APPLICATION</span>
+            <span class="mono-dim">LEFT EYE · COMPOSITED</span>
+          </div>
         </div>
       </div>
 
@@ -139,33 +150,56 @@
     </div>
   </section>
 
-  <!-- ============ PROMISE ============ -->
-  <section class="section" id="promise">
-    <div class="section-head">
-      <p class="kicker">What it does</p>
+  <!-- ============ LEDGER ============ -->
+  <section class="section ledger" id="ledger">
+    <header class="section-head">
+      <p class="kicker"><span class="kicker-num">02</span> The product</p>
       <h2>Built for the frame budget</h2>
       <p class="lede">
-        VLXR exists because high refresh rates live or die on pacing — a dropped frame
-        at 200 Hz is felt twice as hard as at 100. It's tuned end to end for that,
-        and controlled where you actually need it: on the PC, and inside the headset
-        without taking it off.
+        High refresh rates live or die on pacing — a dropped frame at 200 Hz
+        is felt twice as hard as at 100. VLXR is tuned end to end for that,
+        and controlled exactly where you need it: on the PC, and inside the
+        headset without taking it off.
       </p>
-    </div>
-    <div class="card-grid cols-3">
-      <article class="card"><h3>Every rate, held</h3><p>72 through 207 Hz, selectable live — the stream re-rates without relaunching the game.</p></article>
-      <article class="card"><h3>Control mid-game</h3><p>Codec, refresh rate, bitrate and buffering adjust on a running stream, from the PC or an in-headset menu.</p></article>
-      <article class="card"><h3>Honest telemetry</h3><p>fps, latency, encode, network and decode — measured per second and shown where you can see it.</p></article>
-    </div>
+    </header>
+
+    <ol class="ledger-list">
+      <li class="ledger-row">
+        <span class="ledger-num">i.</span>
+        <div class="ledger-body">
+          <h3>Every rate, held</h3>
+          <p>72 through 207 Hz, selectable live — the stream re-rates without relaunching the game.</p>
+        </div>
+        <span class="ledger-tag">PACING</span>
+      </li>
+      <li class="ledger-row">
+        <span class="ledger-num">ii.</span>
+        <div class="ledger-body">
+          <h3>Control mid-game</h3>
+          <p>Codec, refresh rate, bitrate and buffering adjust on a running stream — from the PC, or an in-headset menu.</p>
+        </div>
+        <span class="ledger-tag">CONTROL</span>
+      </li>
+      <li class="ledger-row">
+        <span class="ledger-num">iii.</span>
+        <div class="ledger-body">
+          <h3>Honest telemetry</h3>
+          <p>fps, latency, encode, network and decode — measured per second, shown where you can see it.</p>
+        </div>
+        <span class="ledger-tag">TELEMETRY</span>
+      </li>
+    </ol>
   </section>
 
   <!-- ============ COMING SOON ============ -->
   <section class="section soon" id="soon">
     <div class="soon-card">
-      <p class="kicker">Status</p>
+      <p class="kicker"><span class="kicker-num">03</span> Status</p>
       <h2>Coming soon</h2>
       <p>
-        VLXR is in late development on real hardware. This page is the public face of
-        the project — the application itself is closed source and not yet available.
+        VLXR is in late development on real hardware. This page is the public
+        face of the project — the application is closed source and not yet
+        available.
       </p>
       <div class="soon-actions">
         <a class="btn btn-primary" href="https://github.com/Cooooked/VLXR" rel="noopener">Follow the project</a>
