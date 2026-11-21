@@ -304,7 +304,8 @@
     METRICS.forEach(function (m) {
       var card = document.createElement("div");
       card.className = "metric-card";
-      card.title = m.tip || "";
+      card.tabIndex = 0;
+      card.dataset.tip = m.tip || "";
       var cv = document.createElement("canvas");
       cv.width = 160; cv.height = 30;
       var name = document.createElement("div"); name.className = "metric-name"; name.textContent = m.name;
