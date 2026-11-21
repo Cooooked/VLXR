@@ -107,7 +107,7 @@
       <div class="app-titlebar">
         <span class="app-dots"><i></i><i></i><i></i></span>
         <span class="app-title">VLXR Streamer</span>
-        <span class="app-status" id="statusPill"><i class="status-dot"></i><span id="statusText">Active · Quest connected · 144 Hz</span></span>
+        <span class="app-status" id="statusPill"><i class="status-dot"></i><span id="statusText" role="status" aria-live="polite">Active · Quest connected · 144 Hz</span></span>
       </div>
 
       <div class="app-body">
@@ -129,7 +129,7 @@
               <button class="preset" data-setup="desktop" type="button">Desktop</button>
               <button class="preset" data-setup="media" type="button">Media</button>
             </div>
-            <p class="ctl-note" id="setupNote">Tuned for sim racing — max rate, low latency.</p>
+            <p class="ctl-note" id="setupNote" aria-live="polite">Tuned for sim racing — max rate, low latency.</p>
           </div>
           <div class="panel-block">
             <h3>Video</h3>
@@ -151,7 +151,7 @@
                 <button class="hz-btn" data-hz="180" type="button">180</button>
                 <button class="hz-btn" data-hz="207" type="button">207</button>
               </div>
-              <p class="ctl-note" id="budgetNote">Frame budget 6.94 ms</p>
+              <p class="ctl-note" id="budgetNote" aria-live="polite">Frame budget 6.94 ms</p>
             </div>
             <label class="ctl">
               <span class="ctl-label">Bitrate <output id="brOut">150 Mbps</output></span>
@@ -213,7 +213,7 @@
               <button class="preset is-active" data-render="150" type="button">Ultra</button>
               <button class="preset" data-render="200" type="button">Godlike</button>
             </div>
-            <p class="ctl-note" id="renderNote">Render resolution 150% — what the game draws before the stream encodes it.</p>
+            <p class="ctl-note" id="renderNote" aria-live="polite">Render resolution 150% — what the game draws before the stream encodes it.</p>
           </div>
         </aside>
       </div>
