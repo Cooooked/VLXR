@@ -551,3 +551,23 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 100);
   });
 })();
+
+/* Scroll-spy: highlight the nav link for the section in view. */
+(function () {
+  var sections = Array.prototype.slice.call(document.querySelectorAll("main section[id]"));
+  var links = {};
+  document.querySelectorAll(".nav-links a").forEach(function (a) {
+    var id = (a.getAttribute("href") || "").replace("#", "");
+    if (id && document.getElementById(id)) links[id] = a;
+  });
+  if (!sections.length || !("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting && links[en.target.id]) {
+        Object.keys(links).forEach(function (k) { links[k].classList.remove("is-active"); });
+        links[en.target.id].classList.add("is-active");
+      }
+    });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  sections.forEach(function (s) { io.observe(s); });
+})();

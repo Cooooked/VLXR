@@ -667,3 +667,6 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 /* csv download action */
 .csv-actions{display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap}
 .csv-actions .btn{font-family:Consolas,monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+
+/* scroll spy */
+.nav-links a.is-active{color:#ECEDF1;background:rgba(63,123,255,.12)}
