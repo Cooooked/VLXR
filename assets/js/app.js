@@ -217,5 +217,17 @@
   }
 
   bind();
+
+  /* scroll reveal */
+  var revealEls = document.querySelectorAll(".section-head, .card, .bench-grid, .soon-card");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { el.classList.add("reveal"); io.observe(el); });
+  }
+
   requestAnimationFrame(frame);
 })();

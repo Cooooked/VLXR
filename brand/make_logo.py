@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""ViewLab XR (VLXR) logo — mark is the real app icon (vlxr.ico), wordmark is
-"ViewLab XR" in Segoe UI Semibold outlines (fontTools), "XR" in accent blue.
+"""VLXR (VLXR) logo — mark is the real app icon (vlxr.ico), wordmark is
+"VLXR" in Segoe UI Semibold outlines (fontTools), "XR" in accent blue.
 Emits SVG masters + transparent PNGs at 450x76 / 225x38 / 113x19 + favicon."""
 import base64
 import io
@@ -40,13 +40,13 @@ DISP_W = DISP_H * ICON_W / ICON_H
 ICON_X = 12.0
 ICON_Y = (76 - DISP_H) / 2
 
-# ---- wordmark: "ViewLab" ink + " XR" accent ----
-PARTS_TEXT = [("ViewLab", INK), (" XR", ACCENT)]
-TRACK = 1.0
+# ---- wordmark: "VLXR" ----
+PARTS_TEXT = [("VLXR", INK)]
+TRACK = 3.0
 bp = BoundsPen(glyphs)
 glyphs[cmap[ord("V")]].draw(bp)
 cap_h = bp.bounds[3] - bp.bounds[1]
-SCALE = 40.0 / cap_h
+SCALE = 48.0 / cap_h
 CAP_PX = cap_h * SCALE
 BASELINE_Y = (76 + CAP_PX) / 2
 
@@ -112,17 +112,17 @@ def emit(prefix):
         print(prefix, suf, im.size)
 
 
-emit("viewlab-xr-logo")
+emit("vlxr-logo")
 # dark variant: swap ink colour for light-background use (XR stays accent blue)
 svg_dark = logo_svg().replace(f'fill="{INK}"', f'fill="{INK_DARK}"')
-with open(f"{OUT}/viewlab-xr-logo-dark.svg", "w", encoding="utf-8") as f:
+with open(f"{OUT}/vlxr-logo-dark.svg", "w", encoding="utf-8") as f:
     f.write(svg_dark)
 for w, h, suf in [(450, 76, "450x76"), (225, 38, "225x38"), (113, 19, "113x19")]:
     png = resvg_py.svg_to_bytes(svg_dark, width=w, height=h)
     im = Image.open(io.BytesIO(png)).convert("RGBA")
     if im.size != (w, h):
         im = im.crop((0, 0, w, h))
-    im.save(f"{OUT}/viewlab-xr-logo-dark-{suf}.png")
+    im.save(f"{OUT}/vlxr-logo-dark-{suf}.png")
     print("dark", suf, im.size)
 
 # favicon: icon on dark tile, aspect preserved
