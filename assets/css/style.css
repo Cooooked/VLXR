@@ -524,3 +524,81 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 }
 .diag-tab.is-active { color: var(--text); background: var(--panel); box-shadow: inset 0 -2px 0 var(--accent); }
 .diag-body { padding: 18px; }
+
+/* ---------- desktop mode scene ---------- */
+.desktop-scene {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--border-strong); min-height: 380px;
+  background: radial-gradient(120% 90% at 50% 0%, #1a1d24 0%, #0b0c10 70%);
+  display: grid; place-items: center; padding: 48px 24px;
+}
+.passthrough { position: absolute; inset: 0; opacity: .5; }
+.pt-block {
+  position: absolute; border-radius: 8px;
+  background: linear-gradient(135deg, #23262e, #171a20);
+  border: 1px solid rgba(255,255,255,.05);
+}
+.pt-block.b1 { width: 180px; height: 120px; left: 8%; top: 14%; }
+.pt-block.b2 { width: 140px; height: 200px; right: 10%; top: 10%; }
+.pt-block.b3 { width: 220px; height: 90px; left: 16%; bottom: 12%; }
+.desktop-panel {
+  position: relative; width: min(680px, 92%);
+  border: 1px solid var(--border-strong); border-radius: 10px;
+  background: #14161b; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(63,123,255,.08);
+  overflow: hidden;
+}
+.desktop-titlebar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 12px; background: #1b1e25; border-bottom: 1px solid var(--border);
+}
+.desktop-titlebar i { width: 9px; height: 9px; border-radius: 50%; background: #2c303a; }
+.desktop-titlebar i:first-child { background: #c90012; opacity: .7; }
+.desktop-titlebar span { margin-left: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .08em; }
+.desktop-body { display: flex; gap: 10px; padding: 14px; }
+.desk-col { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.desk-col.narrow { flex: 0 0 34%; }
+.desk-win {
+  border: 1px solid var(--border); border-radius: 6px;
+  background: #101217; overflow: hidden; min-height: 74px;
+}
+.desk-win .dw-bar { display: block; height: 14px; background: #191c22; border-bottom: 1px solid var(--border); }
+.desk-win .dw-lines { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+.desk-win .dw-lines i { height: 5px; border-radius: 2px; background: #262b35; }
+.desk-win .dw-lines i:nth-child(1) { width: 62%; }
+.desk-win .dw-lines i:nth-child(2) { width: 84%; }
+.desk-win .dw-lines i:nth-child(3) { width: 45%; }
+.desk-win .dw-lines i.wide { width: 90%; }
+.desk-win.hud { min-height: 120px; }
+.desk-win.hud .dw-spark {
+  margin: 12px; height: 70px; border-radius: 4px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(63,123,255,.06) 14px 15px),
+    linear-gradient(180deg, rgba(63,123,255,.14), rgba(63,123,255,.03));
+  border: 1px solid rgba(63,123,255,.15);
+}
+.desktop-hint {
+  padding: 10px 14px; border-top: 1px solid var(--border);
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+@media (max-width: 640px) {
+  .desktop-body { flex-direction: column; }
+  .desk-col.narrow { flex: none; }
+  .desktop-scene { min-height: 320px; padding: 32px 14px; }
+}
+
+/* ---------- stats.csv window ---------- */
+.csv-window {
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  background: var(--panel); overflow: hidden;
+}
+.csv-title {
+  padding: 10px 16px; font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.csv-body { margin: 0; padding: 16px 18px; overflow-x: auto; }
+.csv-body code {
+  font-family: var(--mono); font-size: 12px; line-height: 1.75;
+  color: #9fb4d8; white-space: pre;
+}
+.csv-body .csv-h { color: var(--muted); }

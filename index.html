@@ -31,6 +31,7 @@
       <a href="#console">The Streamer</a>
       <a href="#headset">In the headset</a>
       <a href="#void">Overlays</a>
+      <a href="#desktop">Desktop</a>
       <a href="#diagnostics">Diagnostics</a>
       <a href="#soon">Status</a>
     </nav>
@@ -273,10 +274,50 @@
     </div>
   </section>
 
-  <!-- ============ 04 · DIAGNOSTICS ============ -->
+  <!-- ============ 04 · DESKTOP MODE ============ -->
+  <section class="section" id="desktop">
+    <header class="section-head">
+      <p class="kicker"><span class="kicker-num">04</span> Desktop mode</p>
+      <h2>Your whole PC, floating in the void</h2>
+      <p class="lede">
+        Not every session is a game. Desktop mode streams your primary monitor
+        onto a panel over passthrough — aim with the right controller, trigger
+        clicks, A right-clicks, the stick scrolls. It yields automatically the
+        moment a game claims the stream. Experimental, and already useful.
+      </p>
+    </header>
+
+    <div class="desktop-scene" aria-label="Desktop mode illustration: PC desktop on a floating panel">
+      <div class="passthrough" aria-hidden="true">
+        <span class="pt-block b1"></span><span class="pt-block b2"></span>
+        <span class="pt-block b3"></span>
+      </div>
+      <div class="desktop-panel">
+        <div class="desktop-titlebar"><i></i><i></i><i></i><span>Desktop — primary monitor</span></div>
+        <div class="desktop-body">
+          <div class="desk-col">
+            <div class="desk-win browser"><span class="dw-bar"></span><div class="dw-lines"><i></i><i></i><i></i><i></i></div></div>
+            <div class="desk-win chat"><span class="dw-bar"></span><div class="dw-lines"><i></i><i></i><i class="wide"></i></div></div>
+          </div>
+          <div class="desk-col narrow">
+            <div class="desk-win hud"><span class="dw-bar"></span><div class="dw-spark"></div></div>
+          </div>
+        </div>
+        <div class="desktop-hint mono-dim">aim · trigger click · A right-click · stick scroll</div>
+      </div>
+    </div>
+
+    <div class="card-grid cols-3">
+      <article class="card"><h3>Over passthrough</h3><p>The panel floats in your room, not inside a game — check a browser, a dashboard or a chat without leaving VR.</p></article>
+      <article class="card"><h3>Yields to games</h3><p>Launch a title and desktop mode steps aside automatically; exit and it's waiting again.</p></article>
+      <article class="card"><h3>Honest status</h3><p>Marked experimental in the Streamer — it ships labelled, measured, and improved release by release.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ 05 · DIAGNOSTICS ============ -->
   <section class="section" id="diagnostics">
     <header class="section-head">
-      <p class="kicker"><span class="kicker-num">04</span> Diagnostics</p>
+      <p class="kicker"><span class="kicker-num">05</span> Diagnostics</p>
       <h2>A second window that watches the first</h2>
       <p class="lede">
         Stats &amp; diagnostics is its own app window — the live stats.csv row,
@@ -308,10 +349,10 @@
     <p class="mono-dim stats-caption">Illustrative values — the real window reads the live stats.csv row and charts every metric over time.</p>
   </section>
 
-  <!-- ============ 05 · CONNECTION ============ -->
+  <!-- ============ 06 · CONNECTION ============ -->
   <section class="section" id="connection">
     <header class="section-head">
-      <p class="kicker"><span class="kicker-num">05</span> Connection</p>
+      <p class="kicker"><span class="kicker-num">06</span> Connection</p>
       <h2>It finds the headset. You just play.</h2>
       <p class="lede">
         No IP addresses, no pairing rituals. The Streamer discovers the headset
@@ -327,10 +368,10 @@
     </div>
   </section>
 
-  <!-- ============ 06 · TELEMETRY ============ -->
+  <!-- ============ 07 · TELEMETRY ============ -->
   <section class="section" id="telemetry">
     <header class="section-head">
-      <p class="kicker"><span class="kicker-num">06</span> Telemetry</p>
+      <p class="kicker"><span class="kicker-num">07</span> Telemetry</p>
       <h2>Numbers you can trust</h2>
       <p class="lede">
         Every second of every stream is logged — frame pacing percentiles,
@@ -340,22 +381,22 @@
       </p>
     </header>
 
-    <div class="stats-mock" aria-label="Example stats readout">
-      <div class="stats-row head"><span>METRIC</span><span>VALUE</span><span>NOTE</span></div>
-      <div class="stats-row"><span>Headset FPS</span><b>207</b><span class="mono-dim">target 207</span></div>
-      <div class="stats-row"><span>PC pacing p99</span><b>4.93 ms</b><span class="mono-dim">budget 4.83 ms</span></div>
-      <div class="stats-row"><span>Total latency</span><b>27.4 ms</b><span class="mono-dim">encode + net + decode</span></div>
-      <div class="stats-row"><span>Encode / Network / Decode</span><b>1.8 / 2.1 / 3.4 ms</b><span class="mono-dim">per-second breakdown</span></div>
-      <div class="stats-row"><span>Bitrate</span><b>148 Mbps</b><span class="mono-dim">AV1 · constant</span></div>
-      <div class="stats-row diag"><span>Diagnostics</span><b>All clear</b><span class="mono-dim">no pressure detected</span></div>
+    <div class="csv-window" aria-label="Example stats.csv log">
+      <div class="csv-title mono-dim">stats.csv — one row per second · previous session kept as stats.csv.old</div>
+<pre class="csv-body"><code><span class="csv-h"># t,fps,frame_ms,pacing_p99_ms,latency_ms,bitrate_mbps,codec,res_x,res_y</span>
+14:02:11,207.0,4.81,4.93,27.4,148.2,AV1,3552,2112
+14:02:12,206.8,4.83,4.91,27.1,148.0,AV1,3552,2112
+14:02:13,207.0,4.80,4.88,26.9,148.4,AV1,3552,2112
+14:02:14,206.4,4.85,5.02,28.0,147.9,AV1,3552,2112
+14:02:15,207.0,4.79,4.85,26.8,148.3,AV1,3552,2112</code></pre>
     </div>
-    <p class="mono-dim stats-caption">Illustrative values — the real window shows the live stats.csv row, 13 reorderable charts and plain-language diagnostics.</p>
+    <p class="mono-dim stats-caption">Illustrative rows — every second of every stream is logged to disk, alongside the live panel, charts and plain-language diagnostics.</p>
   </section>
 
   <!-- ============ COMING SOON ============ -->
   <section class="section soon" id="soon">
     <div class="soon-card">
-      <p class="kicker"><span class="kicker-num">07</span> Status</p>
+      <p class="kicker"><span class="kicker-num">08</span> Status</p>
       <h2>Coming soon</h2>
       <p>
         VLXR is in late development on real hardware. This page is the public
