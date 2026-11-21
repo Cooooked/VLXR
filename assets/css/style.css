@@ -709,3 +709,4 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .conn-steps li.is-ok{border-left-color:#4a9e6b;color:#9fd4ae}
 .conn-steps li.is-bad{border-left-color:#c0504d;color:#e0a49f}
 .conn-note{margin-top:12px}
+.metric-card{cursor:help}

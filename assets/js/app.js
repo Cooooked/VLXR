@@ -261,20 +261,20 @@
 
   /* ---------- metric strip (Streamer-style sparkline cards) ---------- */
   var METRICS = [
-    { id: "fps", name: "Decoded FPS", color: "#3DD68C", fmt: function (v) { return v.toFixed(0); } },
-    { id: "stale", name: "Late displays", color: "#FFA629", fmt: function (v) { return v.toFixed(1); } },
-    { id: "lat", name: "Total latency", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "br", name: "Actual bitrate", color: "#9DBBFF", unit: " Mbps", fmt: function (v) { return v.toFixed(0); } },
-    { id: "enc", name: "Encode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "net", name: "Network", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "dec", name: "Decode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "p99", name: "PC pacing p99", color: "#3F7BFF", unit: " ms", fmt: function (v) { return v.toFixed(2); } },
-    { id: "px", name: "Encoded / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
-    { id: "crop", name: "Game crop / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
-    { id: "worst", name: "Worst PC frame", color: "#FFA629", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "dq", name: "Decoder queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "vq", name: "Display queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
-    { id: "target", name: "Target", color: "#5D6272", unit: " Hz", fmt: function (v) { return v.toFixed(0); } }
+    { id: "fps", tip: "Frames the headset decoded this second — the number that matters in-headset.", name: "Decoded FPS", color: "#3DD68C", fmt: function (v) { return v.toFixed(0); } },
+    { id: "stale", tip: "Frames that arrived too late and were skipped — lower is better.", name: "Late displays", color: "#FFA629", fmt: function (v) { return v.toFixed(1); } },
+    { id: "lat", tip: "Glass-to-glass latency estimate — game frame to photons.", name: "Total latency", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "br", tip: "Measured stream bitrate — compare against your bitrate setting.", name: "Actual bitrate", color: "#9DBBFF", unit: " Mbps", fmt: function (v) { return v.toFixed(0); } },
+    { id: "enc", tip: "Time spent queueing frames for the encoder.", name: "Encode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "net", tip: "Estimated network transit including buffering.", name: "Network", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "dec", tip: "Headset-side decode time.", name: "Decode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "p99", tip: "Worst-case PC frame pacing — the stutter metric.", name: "PC pacing p99", color: "#3F7BFF", unit: " ms", fmt: function (v) { return v.toFixed(2); } },
+    { id: "px", tip: "Resolution actually sent to the encoder per eye.", name: "Encoded / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
+    { id: "crop", tip: "What the game renders per eye — the crop ViewLab-style tuning exploits.", name: "Game crop / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
+    { id: "worst", tip: "Slowest PC frame this window — spikes show here first.", name: "Worst PC frame", color: "#FFA629", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "dq", tip: "Headset decoder queue depth — backlog shows as latency.", name: "Decoder queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "vq", tip: "Display queue — frames waiting for scanout.", name: "Display queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "target", tip: "The refresh rate you asked for.", name: "Target", color: "#5D6272", unit: " Hz", fmt: function (v) { return v.toFixed(0); } }
   ];
   var metricCards = [];
 
@@ -284,6 +284,7 @@
     METRICS.forEach(function (m) {
       var card = document.createElement("div");
       card.className = "metric-card";
+      card.title = m.tip || "";
       var cv = document.createElement("canvas");
       cv.width = 160; cv.height = 30;
       var name = document.createElement("div"); name.className = "metric-name"; name.textContent = m.name;
