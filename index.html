@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ViewLab XR (VLXR) — PC VR streaming at 72–207 Hz for Quest 3</title>
+<meta name="description" content="VLXR is a PC VR runtime and streamer that drives a Meta Quest 3 at any refresh rate it supports — up to 207 Hz — with AV1, HEVC or H.264, live tuning from a Streamer app, and an in-headset menu.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViewLab XR — PC VR streaming at 72–207 Hz">
+<meta property="og:description" content="Any refresh rate the headset supports. Real codecs. Live controls. VLXR for Quest 3 on Windows.">
+<meta property="og:url" content="https://cooooked.github.io/VIEWLAB-XR/">
+<meta property="og:image" content="https://cooooked.github.io/VIEWLAB-XR/assets/img/og-card.png">
+<meta name="theme-color" content="#0E0F13">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="top">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="ViewLab XR home">
+      <img class="brand-logo" src="assets/img/viewlab-xr-logo.svg" alt="ViewLab XR">
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#bench">The bench</a>
+      <a href="#refresh">Refresh rates</a>
+      <a href="#streamer">Streamer</a>
+      <a href="#headset">In the headset</a>
+      <a href="#status">Status</a>
+    </nav>
+    <a class="btn btn-ghost nav-cta" href="https://github.com/Cooooked/VLXR" rel="noopener">GitHub</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <img class="hero-logo" src="assets/img/viewlab-xr-logo-450x76.png" alt="ViewLab XR" width="450" height="76">
+      <p class="hero-tag">PC VR streaming at 72–207 Hz. Your headset's full rate, not a cap.</p>
+      <p class="hero-sub">
+        VLXR — ViewLab XR — is a PC VR runtime and streamer for Meta Quest 3. It drives your
+        VR games at any refresh rate the headset supports, encodes with the hardware
+        encoder, and gives you live control from a Streamer app and an in-headset menu.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#bench">Try the stream bench</a>
+        <a class="btn btn-ghost" href="https://github.com/Cooooked/VLXR" rel="noopener">View on GitHub</a>
+      </div>
+      <ul class="hero-facts" aria-label="Key facts">
+        <li>Quest 3 · Windows</li>
+        <li>72–207 Hz</li>
+        <li>AV1 · HEVC · H.264</li>
+        <li>Live tuning in-game</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ STREAM BENCH ============ -->
+  <section class="bench section" id="bench">
+    <div class="section-head">
+      <p class="kicker">Interactive</p>
+      <h2>The stream bench</h2>
+      <p class="lede">
+        A working model of VLXR's core trade-off: every refresh rate has a frame-time budget,
+        and codec, resolution and buffering decide whether you hold it. Drag the controls and
+        watch the pacing graph — green means inside budget, red is a missed frame. It is an
+        illustration of the real controls, not a screenshot of the app.
+      </p>
+    </div>
+
+    <div class="bench-grid">
+      <div class="bench-stage">
+        <div class="viewport-frame">
+          <canvas id="viewport" width="960" height="600" aria-label="Simulated VR stream view with live stats and frame pacing graph"></canvas>
+          <p class="viewport-caption">Illustrative simulation — not the actual application.</p>
+        </div>
+      </div>
+
+      <aside class="bench-panel" aria-label="VLXR stream controls">
+        <div class="panel-block">
+          <h3>Refresh rate</h3>
+          <div class="hz-row" id="hzRow" role="group" aria-label="Refresh rate">
+            <button class="hz-btn" data-hz="72" type="button">72</button>
+            <button class="hz-btn" data-hz="90" type="button">90</button>
+            <button class="hz-btn" data-hz="120" type="button">120</button>
+            <button class="hz-btn is-active" data-hz="144" type="button">144</button>
+            <button class="hz-btn" data-hz="180" type="button">180</button>
+            <button class="hz-btn" data-hz="207" type="button">207</button>
+          </div>
+          <p class="ctl-note" id="budgetNote">Frame budget 6.94 ms</p>
+        </div>
+
+        <div class="panel-block">
+          <h3>Encode</h3>
+          <label class="ctl">
+            <span class="ctl-label">Codec</span>
+            <select id="codec" class="select">
+              <option value="av1" selected>AV1</option>
+              <option value="hevc">HEVC</option>
+              <option value="h264">H.264</option>
+            </select>
+          </label>
+          <label class="ctl">
+            <span class="ctl-label">Stream resolution <output id="resOut">100%</output></span>
+            <input type="range" id="resolution" min="50" max="100" value="100" step="5">
+          </label>
+          <label class="ctl">
+            <span class="ctl-label">Bitrate <output id="brOut">150 Mbps</output></span>
+            <input type="range" id="bitrate" min="20" max="400" value="150" step="10">
+          </label>
+        </div>
+
+        <div class="panel-block">
+          <h3>Latency</h3>
+          <label class="ctl">
+            <span class="ctl-label">Video buffering <output id="bufOut">1 frame</output></span>
+            <input type="range" id="buffering" min="0" max="4" value="1" step="1">
+          </label>
+          <label class="ctl">
+            <span class="ctl-label">Foveated encode</span>
+            <span class="switch-row">
+              <input type="checkbox" id="foveated">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="switch-text">Periphery at lower detail</span>
+            </span>
+          </label>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ REFRESH ============ -->
+  <section class="section" id="refresh">
+    <div class="section-head">
+      <p class="kicker">The headline</p>
+      <h2>Every refresh rate the headset supports</h2>
+      <p class="lede">
+        Quest 3 panels top out at 144 Hz through most PC VR stacks. VLXR streams at whatever
+        the headset is set to — 72 through 207 Hz, with 240 experimental — and paces frames
+        to hit it, measured second by second.
+      </p>
+    </div>
+    <div class="card-grid cols-3">
+      <article class="card"><h3>72–207 Hz, selectable</h3><p>Pick the rate in the Streamer app or double-tap the menu button in-headset — the stream re-rates without relaunching the game.</p></article>
+      <article class="card"><h3>Precise frame pacing</h3><p>One-frame buffering and per-second stats keep frame times inside the budget for the chosen rate — the difference between smooth and almost-smooth at 200 Hz.</p></article>
+      <article class="card"><h3>Honest numbers</h3><p>Per-second stats.csv and live readouts for fps, latency, encode, network and decode — measured on real hardware, published with the caveats.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ STREAMER ============ -->
+  <section class="section" id="streamer">
+    <div class="section-head">
+      <p class="kicker">On the PC</p>
+      <h2>The Streamer app</h2>
+      <p class="lede">
+        A familiar Streamer window: codec, refresh rate, bitrate, resolution,
+        video buffering, headset connection and game launch — with live stats, and changes
+        that apply while the game is running.
+      </p>
+    </div>
+    <div class="card-grid cols-3">
+      <article class="card"><h3>Live controls</h3><p>Codec, refresh rate, bitrate, resolution percentage and video buffering — all applied to a running stream, not just at launch.</p></article>
+      <article class="card"><h3>Game launch &amp; list</h3><p>Launch VR titles straight from the Streamer; only games started there use VLXR — your normal runtime stays the default.</p></article>
+      <article class="card"><h3>Performance panel</h3><p>fps, latency, encode, network and decode breakdown plus bitrate — on the PC and mirrored in-headset.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ HEADSET ============ -->
+  <section class="section" id="headset">
+    <div class="section-head">
+      <p class="kicker">In the headset</p>
+      <h2>Control without taking the headset off</h2>
+      <p class="lede">
+        Double-tap the menu button for an in-headset menu — change refresh rate and bitrate
+        mid-game. Both thumbsticks summon the performance panel; right stick plus A captures
+        a screenshot with stats.
+      </p>
+    </div>
+    <div class="card-grid cols-3">
+      <article class="card"><h3>In-headset menu</h3><p>Refresh rate and bitrate controls rendered inside VR — no dashboard dive mid-race.</p></article>
+      <article class="card"><h3>Performance panel</h3><p>fps, latency, encode/network/decode timings and bitrate, summoned with both thumbsticks.</p></article>
+      <article class="card"><h3>Screenshots + stats</h3><p>Left-eye stream capture with the stats panel, plus a stats sidecar — proof of what the encoder saw.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ STATUS ============ -->
+  <section class="section" id="status">
+    <div class="section-head">
+      <p class="kicker">Honest status</p>
+      <h2>Early, measured, one setup</h2>
+      <p class="lede">
+        VLXR is early software tested on a single configuration — RX 9070 XT, Quest 3 on a
+        wired LAN adapter. Measured results are published with their conditions rather than
+        benchmarks marketing can't support. It needs an a capable GPU (hardware encoder),
+        Windows 10/11, a Quest 3 in developer mode and a solid local network.
+      </p>
+    </div>
+    <div class="card-grid cols-2">
+      <article class="card"><h3>Measured</h3><p>180 Hz held 180 fps headset-side; 207 Hz held 207 fps every second with ~25–30 ms total latency on the test rig.</p></article>
+      <article class="card"><h3>Requirements</h3><p>a capable GPU, Windows 10/11, Meta Quest 3 developer mode with the VLXR client, Wi-Fi 6/6E or USB-C Ethernet on the headset.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="assets/img/viewlab-xr-logo-450x76.png" alt="ViewLab XR" width="225" height="38">
+      <p class="footer-tag">ViewLab XR — PC VR streaming at 72–207 Hz for Quest 3.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://github.com/Cooooked/VLXR" rel="noopener">Source &amp; releases</a>
+        <a href="https://github.com/Cooooked/VLXR/blob/main/README.md" rel="noopener">Documentation</a>
+        <a href="https://github.com/Cooooked/VLXR/blob/main/DEVLOG.md" rel="noopener">Devlog</a>
+      </nav>
+      <p class="footer-note">VLXR is early software in active development, tested on one PC and one headset. Figures on this page are measured on that setup; the stream bench is an illustrative simulation of real controls.</p>
+    </div>
+  </footer>
+
+</main>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
