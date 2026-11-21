@@ -261,17 +261,18 @@
 
     <div class="void-diagram" aria-label="Diagram of overlay panels positioned in the void around a game view">
       <div class="void-bar top">
-        <div class="panel-chip">RaceLab</div>
-        <div class="panel-chip">ViewLab HUD</div>
+        <button class="panel-chip" type="button" aria-pressed="true">RaceLab</button>
+        <button class="panel-chip" type="button" aria-pressed="true">ViewLab HUD</button>
       </div>
       <div class="void-crop">
         <span class="crop-label mono-dim">GAME VIEW</span>
         <div class="crop-hud" aria-hidden="true"></div>
       </div>
       <div class="void-bar bottom">
-        <div class="panel-chip wide">OpenKneeboard 1920×1080</div>
-        <div class="panel-chip small">iRacing cues</div>
+        <button class="panel-chip wide" type="button" aria-pressed="true">OpenKneeboard 1920×1080</button>
+        <button class="panel-chip small" type="button" aria-pressed="true">iRacing cues</button>
       </div>
+      <p class="void-hint mono-dim">click a panel to hide or show it — like the Streamer's per-panel toggles</p>
     </div>
 
     <div class="card-grid cols-3 void-cards">

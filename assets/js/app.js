@@ -445,3 +445,11 @@
     }
   });
 })();
+
+/* Void diagram — per-panel hide/show (illustrates the Streamer's panel toggles). */
+document.querySelectorAll(".panel-chip").forEach(function (chip) {
+  chip.addEventListener("click", function () {
+    var on = chip.getAttribute("aria-pressed") === "true";
+    chip.setAttribute("aria-pressed", on ? "false" : "true");
+  });
+});

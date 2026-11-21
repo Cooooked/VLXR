@@ -651,3 +651,9 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .faq-item[open] summary::after{transform:rotate(45deg)}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item p{margin:0;padding:0 20px 18px;color:#8C90A0;font-size:14.5px;line-height:1.6}
+
+/* void panel chips — interactive hide/show */
+.panel-chip{font:inherit;cursor:pointer;transition:opacity .2s,border-color .2s}
+.panel-chip[aria-pressed="false"]{opacity:.28;border-style:dashed}
+.panel-chip[aria-pressed="false"]::after{content:" · hidden";font-size:.85em;opacity:.8}
+.void-hint{margin:14px 0 0;text-align:center}
