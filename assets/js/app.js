@@ -499,6 +499,7 @@
   var panels = document.querySelectorAll(".diag-panel");
   // live bars: gently re-jitter chart heights while the Charts tab is visible
   var barsTimer = null;
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var chartsPanel = document.querySelector('.diag-panel[data-panel="charts"]');
   function barsTick() {
     if (!chartsPanel || !chartsPanel.classList.contains("is-active") || document.hidden) return;
@@ -510,7 +511,7 @@
     });
   }
   function syncBars() {
-    var on = chartsPanel && chartsPanel.classList.contains("is-active") && !document.hidden;
+    var on = chartsPanel && chartsPanel.classList.contains("is-active") && !document.hidden && !reducedMotion;
     if (on && !barsTimer) barsTimer = setInterval(barsTick, 900);
     if (!on && barsTimer) { clearInterval(barsTimer); barsTimer = null; }
   }
@@ -539,6 +540,7 @@
 
   // stats readout jitters gently while the All stats tab is visible
   var statsTimer = null;
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var statsPanel = document.querySelector('.diag-panel[data-panel="stats"]');
   var statVals = statsPanel ? Array.prototype.slice.call(statsPanel.querySelectorAll(".stats-row b")) : [];
   var statBase = statVals.map(function (b) { return b.textContent; });
@@ -553,7 +555,7 @@
     });
   }
   function syncStats() {
-    var on = statsPanel && statsPanel.classList.contains("is-active") && !document.hidden;
+    var on = statsPanel && statsPanel.classList.contains("is-active") && !document.hidden && !reducedMotion;
     if (on && !statsTimer) statsTimer = setInterval(statsTick, 1100);
     if (!on && statsTimer) { clearInterval(statsTimer); statsTimer = null; }
   }
