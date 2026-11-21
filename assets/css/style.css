@@ -684,3 +684,9 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .budget-legend li{display:flex;align-items:center;gap:8px}
 .budget-legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
 .budget-legend b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:11.5px}
+
+/* console footer screenshot button */
+.app-btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:5px;padding:5px 10px;cursor:pointer;transition:background .15s,border-color .15s}
+.app-btn:hover{background:rgba(255,255,255,.12);border-color:#3a4a66}
+.app-btn:active{transform:translateY(1px)}
+.app-btn.is-done{color:#7fd18b;border-color:#2c5a3a}

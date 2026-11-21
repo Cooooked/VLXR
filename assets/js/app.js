@@ -379,6 +379,25 @@
   requestAnimationFrame(frame);
 })();
 
+/* Console footer — Screenshot downloads the simulated headset view as PNG. */
+(function () {
+  var btn = document.getElementById("shotBtn");
+  var canvas = document.getElementById("viewport");
+  if (!btn || !canvas) return;
+  btn.addEventListener("click", function () {
+    try {
+      var a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "vlxr-screenshot.png";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { a.remove(); }, 100);
+      btn.classList.add("is-done");
+      btn.textContent = "Saved";
+      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Screenshot"; }, 1600);
+    } catch (e) { /* canvas tainted or unsupported — leave button as-is */ }
+  });
+})();
+
 /* VLXR hero — PC -> headset stream illustration.
    Independent browser animation; no application code or internals. */
 (function () {
