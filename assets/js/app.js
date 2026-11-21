@@ -719,6 +719,9 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     } else if (e.key === "t" || e.key === "T") {
       var tb = document.getElementById("theaterBtn");
       if (tb) { tb.click(); e.preventDefault(); }
+    } else if (e.key === "s" || e.key === "S") {
+      var sb = document.getElementById("shotBtn");
+      if (sb) { sb.click(); e.preventDefault(); }
     }
   });
 })();
