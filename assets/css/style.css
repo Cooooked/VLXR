@@ -663,3 +663,7 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .menu-row:hover{background:rgba(63,123,255,.08)}
 .menu-row.is-sel{background:rgba(63,123,255,.14);box-shadow:inset 2px 0 0 #3F7BFF}
 .menu-row.flash b{color:#3DD68C}
+
+/* csv download action */
+.csv-actions{display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+.csv-actions .btn{font-family:Consolas,monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}

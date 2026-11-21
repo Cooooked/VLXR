@@ -524,3 +524,30 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     });
   });
 })();
+
+/* Telemetry — generate + download a sample stats.csv client-side. */
+(function () {
+  var btn = document.getElementById("csvDl");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var lines = ["# t,fps,frame_ms,pacing_p99_ms,latency_ms,bitrate_mbps,codec,res_x,res_y"];
+    var codec = "AV1", rx = 3552, ry = 2112;
+    var base = new Date(); base.setHours(14, 2, 0, 0);
+    for (var i = 0; i < 60; i++) {
+      var d = new Date(base.getTime() + i * 1000);
+      var hh = String(d.getHours()).padStart(2, "0"), mm = String(d.getMinutes()).padStart(2, "0"), ss = String(d.getSeconds()).padStart(2, "0");
+      var fps = 206 + (Math.random() * 2 - 1);
+      var fms = 1000 / 207 + (Math.random() - 0.5) * 0.15;
+      var p99 = 4.8 + Math.random() * 0.4;
+      var lat = 26.5 + Math.random() * 2.5;
+      var br = 147 + Math.random() * 3;
+      lines.push([hh + ":" + mm + ":" + ss, fps.toFixed(1), fms.toFixed(2), p99.toFixed(2), lat.toFixed(1), br.toFixed(1), codec, rx, ry].join(","));
+    }
+    var blob = new Blob([lines.join("\n") + "\n"], { type: "text/csv" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "stats-sample.csv";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 100);
+  });
+})();
