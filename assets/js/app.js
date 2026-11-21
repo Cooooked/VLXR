@@ -197,6 +197,53 @@
     document.getElementById("encQuality").addEventListener("change", function (e) { state.encQuality = e.target.value; });
     document.getElementById("sharpening").addEventListener("input", function (e) { state.sharpening = +e.target.value; document.getElementById("sharpOut").textContent = e.target.value + "%"; });
 
+    /* quick-setup scenarios — set the whole console at once */
+    var SETUPS = {
+      race:    { hz: 207, codec: "av1", res: 100, renderPct: 150, bitrate: 150, buffering: 1, foveated: true,  brMode: "target",  encQuality: "balanced", sharpening: 10,
+                 note: "Tuned for sim racing — max rate, low latency." },
+      desktop: { hz: 72,  codec: "hevc", res: 80,  renderPct: 100, bitrate: 100, buffering: 2, foveated: false, brMode: "ceiling", encQuality: "speed",     sharpening: 0,
+                 note: "Efficient desktop streaming — cooler GPU, easy to read." },
+      media:   { hz: 90,  codec: "hevc", res: 120, renderPct: 100, bitrate: 200, buffering: 3, foveated: false, brMode: "fixed",   encQuality: "quality",   sharpening: 15,
+                 note: "Quality-first for movies and desktop work." }
+    };
+    function syncControls() {
+      document.getElementById("codec").value = state.codec;
+      document.getElementById("brMode").value = state.brMode;
+      document.getElementById("encQuality").value = state.encQuality;
+      document.getElementById("foveated").checked = state.foveated;
+      var setRange = function (id, outId, val, fmt) {
+        var el = document.getElementById(id); el.value = val;
+        document.getElementById(outId).textContent = fmt(val);
+      };
+      setRange("bitrate", "brOut", state.bitrate, function (v) { return v + " Mbps"; });
+      setRange("resolution", "resOut", state.res, function (v) { return v + "%"; });
+      setRange("sharpening", "sharpOut", state.sharpening, function (v) { return v + "%"; });
+      setRange("buffering", "bufOut", state.buffering, function (v) {
+        return v === 0 ? "0 (lowest latency)" : v + (v === 1 ? " frame" : " frames");
+      });
+      Array.prototype.forEach.call(document.getElementById("hzRow").children, function (c) {
+        c.classList.toggle("is-active", +c.dataset.hz === state.hz);
+      });
+      Array.prototype.forEach.call(document.getElementById("renderRow").children, function (c) {
+        c.classList.toggle("is-active", +c.dataset.render === state.renderPct);
+      });
+      document.getElementById("budgetNote").textContent = "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
+      document.getElementById("statusText").textContent = "Active · Quest connected · " + state.hz + " Hz";
+    }
+    document.getElementById("setupRow").addEventListener("click", function (e) {
+      var b = e.target.closest(".preset"); if (!b) return;
+      var p = SETUPS[b.dataset.setup];
+      Object.assign(state, { hz: p.hz, codec: p.codec, res: p.res, renderPct: p.renderPct,
+        bitrate: p.bitrate, buffering: p.buffering, foveated: p.foveated,
+        brMode: p.brMode, encQuality: p.encQuality, sharpening: p.sharpening });
+      Array.prototype.forEach.call(document.getElementById("setupRow").children, function (c) {
+        c.classList.toggle("is-active", c === b);
+      });
+      document.getElementById("setupNote").textContent = p.note;
+      syncControls();
+    });
+    // keep race preset highlighted by default (state already matches it)
+
     var renderRow = document.getElementById("renderRow");
     renderRow.addEventListener("click", function (e) {
       var b = e.target.closest(".preset"); if (!b) return;
