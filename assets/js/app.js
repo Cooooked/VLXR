@@ -168,8 +168,12 @@
     hzRow.addEventListener("click", function (e) {
       var b = e.target.closest(".hz-btn"); if (!b) return;
       state.hz = +b.dataset.hz;
-      Array.prototype.forEach.call(hzRow.children, function (c) { c.classList.remove("is-active"); });
+      Array.prototype.forEach.call(hzRow.children, function (c) {
+        c.classList.remove("is-active");
+        c.setAttribute("aria-pressed", "false");
+      });
       b.classList.add("is-active");
+      b.setAttribute("aria-pressed", "true");
       document.getElementById("budgetNote").textContent =
         "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
       document.getElementById("statusText").textContent =
