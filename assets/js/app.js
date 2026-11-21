@@ -178,6 +178,7 @@
         "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
       document.getElementById("statusText").textContent =
         "Active · Quest connected · " + state.hz + " Hz";
+      syncControls();
     });
     document.getElementById("codec").addEventListener("change", function (e) { state.codec = e.target.value; });
     var res = document.getElementById("resolution");
@@ -272,6 +273,7 @@
       });
       document.getElementById("renderNote").textContent =
         "Render resolution " + state.renderPct + "% — what the game draws before the stream encodes it.";
+      syncControls();
     });
 
     // initialise console to the Race quick-setup so controls match the active chip
