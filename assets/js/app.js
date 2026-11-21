@@ -643,3 +643,46 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     btn.textContent = on ? "Theater on" : "Theater";
   });
 })();
+
+/* Connection mock — runtime switch runs the ordered steps, then reports ready. */
+(function () {
+  var btn = document.getElementById("connSwitch");
+  var rt = document.getElementById("connRuntime");
+  var steps = document.getElementById("connSteps");
+  if (!btn || !rt || !steps) return;
+  var busy = false;
+  function line(text, cls) {
+    var li = document.createElement("li");
+    li.textContent = text;
+    if (cls) li.className = cls;
+    steps.appendChild(li);
+    while (steps.children.length > 5) steps.removeChild(steps.firstChild);
+    return li;
+  }
+  btn.addEventListener("click", function () {
+    if (busy) return;
+    busy = true; btn.disabled = true;
+    var other = rt.textContent === "VLXR" ? "Other runtime" : "VLXR";
+    var seq = [
+      "ordered shutdown — streamer stops cleanly",
+      "runtime flip — " + other + " registered",
+      "headset cold-launch — VLXR app restarts",
+      "link verified — headset ready, " + other === "VLXR" ? "" : ""
+    ];
+    seq[3] = "link verified — headset ready, streaming on " + other;
+    var i = 0;
+    var cur = line(seq[0], "is-run");
+    var timer = setInterval(function () {
+      cur.className = "is-ok";
+      i++;
+      if (i >= seq.length) {
+        clearInterval(timer);
+        rt.textContent = other;
+        line("switch complete — tray green", "is-ok");
+        busy = false; btn.disabled = false;
+        return;
+      }
+      cur = line(seq[i], "is-run");
+    }, 650);
+  });
+})();

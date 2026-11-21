@@ -433,6 +433,17 @@
       <article class="card"><h3>Crash-safe session</h3><p>Session state is written atomically with last-good restore; a killed streamer doesn't strand the headset.</p></article>
       <article class="card"><h3>One-click runtime switch</h3><p>Switch to VLXR or back — ordered PC-side-first, runtime flip, headset cold-launch, verified link. Tray goes green when the headset is ready.</p></article>
     </div>
+    <div class="conn-mock reveal" aria-label="Runtime switch simulation">
+      <div class="conn-row">
+        <span class="conn-label">ACTIVE RUNTIME</span>
+        <b class="conn-val" id="connRuntime">VLXR</b>
+        <button class="app-btn" id="connSwitch" type="button">Switch runtime</button>
+      </div>
+      <ol class="conn-steps" id="connSteps" aria-live="polite">
+        <li data-step="0">idle — headset connected, 207 Hz</li>
+      </ol>
+    </div>
+    <p class="mono-dim conn-note">Illustrative — the real switch is ordered, verified and crash-safe, with the tray reporting readiness.</p>
   </section>
 
   <!-- ============ 07 · TELEMETRY ============ -->
