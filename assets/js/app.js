@@ -590,3 +590,43 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
   }, { rootMargin: "-30% 0px -60% 0px" });
   sections.forEach(function (s) { io.observe(s); });
 })();
+
+/* Console footer — Copy config exports current settings as plain text. */
+(function () {
+  var btn = document.getElementById("cfgBtn");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var s = state;
+    var bufLabels = ["Off", "1 frame", "2 frames", "3 frames", "4 frames"];
+    var lines = [
+      "VLXR — stream config (simulation)",
+      "refresh_rate_hz: " + s.hz,
+      "codec: " + s.codec.toUpperCase(),
+      "stream_resolution_pct: " + s.res,
+      "render_density_pct: " + s.renderPct,
+      "bitrate_mbps: " + s.bitrate,
+      "bitrate_mode: " + s.brMode,
+      "encoder_quality: " + s.encQuality,
+      "video_buffering: " + (bufLabels[s.buffering] || s.buffering),
+      "foveated_encode: " + (s.foveated ? "on" : "off"),
+      "sharpening_pct: " + s.sharpening,
+      "",
+      "cooooked.github.io/VLXR"
+    ];
+    var text = lines.join("\n");
+    function done() {
+      btn.classList.add("is-done");
+      btn.textContent = "Copied";
+      setTimeout(function () { btn.classList.remove("is-done"); btn.textContent = "Copy config"; }, 1600);
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      ta.remove();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else fallback();
+  });
+})();
