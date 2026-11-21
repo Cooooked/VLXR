@@ -12,7 +12,7 @@
   var CODEC_COST = { av1: 1.0, hevc: 0.92, h264: 0.78 };
   var CODEC_CAP = { av1: 1.0, hevc: 1.0, h264: 0.55 }; // H.264 res cap (~2048/eye)
 
-  var state = { hz: 144, codec: "av1", res: 100, bitrate: 150, buffering: 1, foveated: false };
+  var state = { hz: 144, codec: "av1", res: 100, bitrate: 150, buffering: 1, foveated: false, brMode: "target", encQuality: "balanced", sharpening: 0 };
   var samples = [];   // {t: frameTime, missed: bool}
   var hist = [];      // frame time history for graph
   var t0 = performance.now();
@@ -28,11 +28,14 @@
     var budget = 1000 / state.hz;
     var pixels = Math.pow(state.res / 100, 2);
     var codecFactor = CODEC_COST[state.codec];
+    var qMul = { speed: 0.82, balanced: 1.0, quality: 1.18 }[state.encQuality] || 1;
     if (state.foveated) codecFactor *= 0.82;
+    codecFactor *= qMul;
     var encodeMs = 0.9 + pixels * codecFactor * 1.15;
     // network pressure: bitrate vs resolution headroom
     var needMbps = pixels * (state.hz / 144) * 0.9;
-    var networkPressure = Math.max(0, (needMbps - state.bitrate / 100) * 0.9);
+    var brCap = state.brMode === "ceiling" ? state.bitrate * 1.6 : state.bitrate;
+    var networkPressure = Math.max(0, (needMbps - brCap / 100) * 0.9);
     var jitter = 0.4 + networkPressure * 0.6 + state.buffering * 0.15;
     // total pipeline estimate (illustrative): render+encode+transfer+decode
     var total = encodeMs + 3.5 + state.buffering * (1000 / state.hz) * 0.55 + jitter;
@@ -169,6 +172,8 @@
       b.classList.add("is-active");
       document.getElementById("budgetNote").textContent =
         "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
+      document.getElementById("statusText").textContent =
+        "Active · Quest connected · " + state.hz + " Hz";
     });
     document.getElementById("codec").addEventListener("change", function (e) { state.codec = e.target.value; });
     var res = document.getElementById("resolution");
@@ -188,6 +193,84 @@
         buf.value === "0" ? "0 (lowest latency)" : buf.value + (buf.value === "1" ? " frame" : " frames");
     });
     document.getElementById("foveated").addEventListener("change", function (e) { state.foveated = e.target.checked; });
+    document.getElementById("brMode").addEventListener("change", function (e) { state.brMode = e.target.value; });
+    document.getElementById("encQuality").addEventListener("change", function (e) { state.encQuality = e.target.value; });
+    document.getElementById("sharpening").addEventListener("input", function (e) { state.sharpening = +e.target.value; document.getElementById("sharpOut").textContent = e.target.value + "%"; });
+  }
+
+  /* ---------- metric strip (Streamer-style sparkline cards) ---------- */
+  var METRICS = [
+    { id: "fps", name: "Decoded FPS", color: "#3DD68C", fmt: function (v) { return v.toFixed(0); } },
+    { id: "stale", name: "Late displays", color: "#FFA629", fmt: function (v) { return v.toFixed(1); } },
+    { id: "lat", name: "Total latency", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "br", name: "Actual bitrate", color: "#9DBBFF", unit: " Mbps", fmt: function (v) { return v.toFixed(0); } },
+    { id: "enc", name: "Encode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "net", name: "Network", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "dec", name: "Decode", color: "#ECEDF1", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "p99", name: "PC pacing p99", color: "#3F7BFF", unit: " ms", fmt: function (v) { return v.toFixed(2); } },
+    { id: "px", name: "Encoded / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
+    { id: "crop", name: "Game crop / eye", color: "#8C90A0", fmt: function (v) { return v.toFixed(0) + " px"; } },
+    { id: "worst", name: "Worst PC frame", color: "#FFA629", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "dq", name: "Decoder queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "vq", name: "Display queue", color: "#8C90A0", unit: " ms", fmt: function (v) { return v.toFixed(1); } },
+    { id: "target", name: "Target", color: "#5D6272", unit: " Hz", fmt: function (v) { return v.toFixed(0); } }
+  ];
+  var metricCards = [];
+
+  function buildMetricStrip() {
+    var strip = document.getElementById("metricStrip");
+    if (!strip) return;
+    METRICS.forEach(function (m) {
+      var card = document.createElement("div");
+      card.className = "metric-card";
+      var cv = document.createElement("canvas");
+      cv.width = 160; cv.height = 30;
+      var name = document.createElement("div"); name.className = "metric-name"; name.textContent = m.name;
+      var val = document.createElement("div"); val.className = "metric-val"; val.textContent = "—";
+      card.appendChild(name); card.appendChild(cv); card.appendChild(val);
+      strip.appendChild(card);
+      metricCards.push({ m: m, cv: cv, ctx: cv.getContext("2d"), val: val, hist: [] });
+    });
+  }
+
+  function metricValues(s, ft) {
+    var pixels = Math.pow(state.res / 100, 2);
+    return {
+      fps: state.hz * (0.98 + rand(Math.floor(performance.now() / 900)) * 0.04),
+      stale: ft > s.budget ? (ft - s.budget) * 8 : rand(performance.now() / 700) * 0.4,
+      lat: parseFloat(latency()),
+      br: state.bitrate * (0.92 + rand(performance.now() / 1100) * 0.16),
+      enc: s.encodeMs,
+      net: 2 + state.buffering * 0.7 + rand(performance.now() / 500) * 0.8,
+      dec: 2.6 + pixels * 1.4 + rand(performance.now() / 600) * 0.7,
+      p99: ft,
+      px: 2048 * Math.sqrt(pixels),
+      crop: 3712 * Math.sqrt(pixels) * 0.62,
+      worst: ft + rand(performance.now() / 300) * 0.6,
+      dq: 0.4 + state.buffering * 0.5,
+      vq: 0.3 + rand(performance.now() / 800) * 0.4,
+      target: state.hz
+    };
+  }
+
+  function drawMetricCard(mc, v) {
+    mc.hist.push(v);
+    if (mc.hist.length > 60) mc.hist.shift();
+    mc.val.textContent = mc.m.fmt(v) + (mc.m.unit || "");
+    var c = mc.ctx, w = mc.cv.width, h = mc.cv.height;
+    c.clearRect(0, 0, w, h);
+    var max = Math.max.apply(null, mc.hist.concat([0.001]));
+    var min = Math.min.apply(null, mc.hist.concat([0]));
+    var span = Math.max(1e-6, max - min * 0.5);
+    c.strokeStyle = "rgba(60,64,80,.6)"; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(0, h - 0.5); c.lineTo(w, h - 0.5); c.stroke();
+    c.strokeStyle = mc.m.color; c.lineWidth = 1.4; c.beginPath();
+    mc.hist.forEach(function (p, i) {
+      var x = (i / 59) * w;
+      var y = h - 2 - ((p - min * 0.5) / span) * (h - 5);
+      if (i === 0) c.moveTo(x, y); else c.lineTo(x, y);
+    });
+    c.stroke();
   }
 
   /* ---------- main loop ---------- */
@@ -212,11 +295,14 @@
     var displayFps = state.hz; // headset-side rate
     drawScene(t, s, displayFps, ft);
     drawGraph(s, now);
+    var mv = metricValues(s, ft);
+    metricCards.forEach(function (mc) { drawMetricCard(mc, mv[mc.m.id]); });
 
     if (!reduced) requestAnimationFrame(frame);
   }
 
   bind();
+  buildMetricStrip();
 
   /* scroll reveal */
   var revealEls = document.querySelectorAll(".section-head, .ledger-row, .bench-grid, .soon-card");
