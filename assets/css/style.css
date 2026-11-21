@@ -711,3 +711,5 @@ input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-of
 .conn-note{margin-top:12px}
 .metric-card{cursor:help}
 .app-keys{font-size:10px;letter-spacing:.06em}
+.app-link{color:var(--dim);text-decoration:none;transition:color .15s}
+.app-link:hover{color:var(--ink);text-decoration:underline}
