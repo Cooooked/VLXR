@@ -253,6 +253,10 @@
       document.getElementById("renderNote").textContent =
         "Render resolution " + state.renderPct + "% — what the game draws before the stream encodes it.";
     });
+
+    // initialise console to the Race quick-setup so controls match the active chip
+    var raceBtn = document.querySelector('#setupRow .preset[data-setup="race"]');
+    if (raceBtn) raceBtn.click();
   }
 
   /* ---------- metric strip (Streamer-style sparkline cards) ---------- */
