@@ -497,6 +497,23 @@
   "use strict";
   var tabs = document.querySelectorAll(".diag-tab");
   var panels = document.querySelectorAll(".diag-panel");
+  // live bars: gently re-jitter chart heights while the Charts tab is visible
+  var barsTimer = null;
+  var chartsPanel = document.querySelector('.diag-panel[data-panel="charts"]');
+  function barsTick() {
+    if (!chartsPanel || !chartsPanel.classList.contains("is-active") || document.hidden) return;
+    chartsPanel.querySelectorAll(".bars i").forEach(function (bar) {
+      var base = parseFloat(bar.dataset.base || bar.style.height) || 50;
+      if (!bar.dataset.base) bar.dataset.base = base;
+      var j = (Math.random() * 2 - 1) * 6;
+      bar.style.height = Math.max(15, Math.min(100, base + j)) + "%";
+    });
+  }
+  function syncBars() {
+    var on = chartsPanel && chartsPanel.classList.contains("is-active") && !document.hidden;
+    if (on && !barsTimer) barsTimer = setInterval(barsTick, 900);
+    if (!on && barsTimer) { clearInterval(barsTimer); barsTimer = null; }
+  }
   tabs.forEach(function (tab) {
     tab.addEventListener("click", function () {
       tabs.forEach(function (t) {
@@ -507,6 +524,7 @@
       panels.forEach(function (p) {
         p.classList.toggle("is-active", p.dataset.panel === tab.dataset.tab);
       });
+      syncBars();
     });
     tab.addEventListener("keydown", function (e) {
       var dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
@@ -517,6 +535,7 @@
       next.focus(); next.click();
     });
   });
+  document.addEventListener("visibilitychange", syncBars);
 })();
 
 /* Mobile nav toggle */
