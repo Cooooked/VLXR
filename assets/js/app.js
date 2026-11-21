@@ -785,6 +785,12 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
     } else if (e.key === "s" || e.key === "S") {
       var sb = document.getElementById("shotBtn");
       if (sb) { sb.click(); e.preventDefault(); }
+    } else if (e.key === "Escape") {
+      var win = document.querySelector(".app-window.is-theater");
+      if (win) {
+        var tb = document.getElementById("theaterBtn");
+        if (tb) { tb.click(); e.preventDefault(); }
+      }
     }
   });
 })();
