@@ -667,9 +667,8 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
       "ordered shutdown — streamer stops cleanly",
       "runtime flip — " + other + " registered",
       "headset cold-launch — VLXR app restarts",
-      "link verified — headset ready, " + other === "VLXR" ? "" : ""
+      "link verified — headset ready, streaming on " + other
     ];
-    seq[3] = "link verified — headset ready, streaming on " + other;
     var i = 0;
     var cur = line(seq[0], "is-run");
     var timer = setInterval(function () {
