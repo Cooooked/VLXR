@@ -619,7 +619,10 @@ document.querySelectorAll(".panel-chip").forEach(function (chip) {
       row.dataset.idx = idx;
       var val = opts[idx];
       var labels = row.dataset.labels ? row.dataset.labels.split("|") : null;
-      row.querySelector("b").textContent = labels ? labels[idx] : val + (row.dataset.unit || "");
+      var shown = labels ? labels[idx] : val + (row.dataset.unit || "");
+      row.querySelector("b").textContent = shown;
+      var msg = document.getElementById("menuMsg");
+      if (msg) msg.textContent = row.querySelector("span").textContent + " � " + shown;
       row.classList.add("flash");
       setTimeout(function () { row.classList.remove("flash"); }, 350);
       // move selection like a stick would
