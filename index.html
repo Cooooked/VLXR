@@ -358,6 +358,7 @@
         <button class="diag-tab is-active" data-tab="stats" role="tab" aria-selected="true">All stats</button>
         <button class="diag-tab" data-tab="findings" role="tab" aria-selected="false">Diagnostics</button>
         <button class="diag-tab" data-tab="charts" role="tab" aria-selected="false">Charts</button>
+        <button class="diag-tab" data-tab="budget" role="tab" aria-selected="false">Latency</button>
       </div>
       <div class="diag-body">
       <div class="diag-panel is-active" data-panel="stats">
@@ -389,6 +390,24 @@
           <figure class="chart"><figcaption>Bitrate (Mbps)</figcaption><div class="bars flat" aria-hidden="true"><i style="height:96%"></i><i style="height:95%"></i><i style="height:97%"></i><i style="height:96%"></i><i style="height:96%"></i><i style="height:97%"></i><i style="height:95%"></i><i style="height:96%"></i><i style="height:97%"></i><i style="height:96%"></i><i style="height:95%"></i><i style="height:96%"></i></div></figure>
         </div>
         <p class="mono-dim findings-note">Thirteen reorderable charts in the real window — these three show the shape of a healthy 207 Hz session.</p>
+      </div>
+      <div class="diag-panel" data-panel="budget">
+        <p class="budget-title">Where the 27.4 ms goes <span class="mono-dim">— illustrative split of glass-to-glass latency</span></p>
+        <div class="budget-bar" role="img" aria-label="Latency budget: game render and submit 8.2 ms, encode queue 1.8 ms, network 2.1 ms, decode 3.4 ms, headset compositor and scanout 11.9 ms">
+          <span class="seg s-render" style="width:30%" title="Game render + submit — 8.2 ms"></span>
+          <span class="seg s-encode" style="width:7%" title="Encode queue — 1.8 ms"></span>
+          <span class="seg s-net" style="width:8%" title="Network transit — 2.1 ms"></span>
+          <span class="seg s-decode" style="width:12%" title="Headset decode — 3.4 ms"></span>
+          <span class="seg s-scan" style="width:43%" title="Compositor + scanout — 11.9 ms"></span>
+        </div>
+        <ul class="budget-legend">
+          <li><i class="s-render"></i>Game render + submit <b>8.2 ms</b></li>
+          <li><i class="s-encode"></i>Encode queue <b>1.8 ms</b></li>
+          <li><i class="s-net"></i>Network transit <b>2.1 ms</b></li>
+          <li><i class="s-decode"></i>Headset decode <b>3.4 ms</b></li>
+          <li><i class="s-scan"></i>Compositor + scanout <b>11.9 ms</b></li>
+        </ul>
+        <p class="mono-dim findings-note">VLXR's job is the middle three. The game owns the first slice; the headset panel owns the last — and every setting on this page moves only what VLXR controls.</p>
       </div>
       </div>
     </div>
