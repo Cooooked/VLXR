@@ -241,7 +241,9 @@
         bitrate: p.bitrate, buffering: p.buffering, foveated: p.foveated,
         brMode: p.brMode, encQuality: p.encQuality, sharpening: p.sharpening });
       Array.prototype.forEach.call(document.getElementById("setupRow").children, function (c) {
-        c.classList.toggle("is-active", c === b);
+        var on = c === b;
+        c.classList.toggle("is-active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
       });
       document.getElementById("setupNote").textContent = p.note;
       syncControls();
