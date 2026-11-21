@@ -184,12 +184,15 @@
 
           <div class="panel-block">
             <h3>Render density</h3>
-            <div class="preset-row" aria-label="Render resolution presets">
-              <span class="preset">Potato</span><span class="preset">Low</span>
-              <span class="preset">Medium</span><span class="preset">High</span>
-              <span class="preset is-active">Ultra</span><span class="preset">Godlike</span>
+            <div class="preset-row" id="renderRow" role="group" aria-label="Render resolution presets">
+              <button class="preset" data-render="25" type="button">Potato</button>
+              <button class="preset" data-render="50" type="button">Low</button>
+              <button class="preset" data-render="75" type="button">Medium</button>
+              <button class="preset" data-render="100" type="button">High</button>
+              <button class="preset is-active" data-render="150" type="button">Ultra</button>
+              <button class="preset" data-render="200" type="button">Godlike</button>
             </div>
-            <p class="ctl-note">Render resolution 25–200% — what the game draws before the stream encodes it.</p>
+            <p class="ctl-note" id="renderNote">Render resolution 150% — what the game draws before the stream encodes it.</p>
           </div>
         </aside>
       </div>

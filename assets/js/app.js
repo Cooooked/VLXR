@@ -12,7 +12,7 @@
   var CODEC_COST = { av1: 1.0, hevc: 0.92, h264: 0.78 };
   var CODEC_CAP = { av1: 1.0, hevc: 1.0, h264: 0.55 }; // H.264 res cap (~2048/eye)
 
-  var state = { hz: 144, codec: "av1", res: 100, bitrate: 150, buffering: 1, foveated: false, brMode: "target", encQuality: "balanced", sharpening: 0 };
+  var state = { hz: 144, codec: "av1", res: 100, renderPct: 150, bitrate: 150, buffering: 1, foveated: false, brMode: "target", encQuality: "balanced", sharpening: 0 };
   var samples = [];   // {t: frameTime, missed: bool}
   var hist = [];      // frame time history for graph
   var t0 = performance.now();
@@ -26,7 +26,7 @@
 
   function settings() {
     var budget = 1000 / state.hz;
-    var pixels = Math.pow(state.res / 100, 2);
+    var pixels = Math.pow(state.res / 100, 2) * (state.renderPct / 100);
     var codecFactor = CODEC_COST[state.codec];
     var qMul = { speed: 0.82, balanced: 1.0, quality: 1.18 }[state.encQuality] || 1;
     if (state.foveated) codecFactor *= 0.82;
@@ -196,6 +196,16 @@
     document.getElementById("brMode").addEventListener("change", function (e) { state.brMode = e.target.value; });
     document.getElementById("encQuality").addEventListener("change", function (e) { state.encQuality = e.target.value; });
     document.getElementById("sharpening").addEventListener("input", function (e) { state.sharpening = +e.target.value; document.getElementById("sharpOut").textContent = e.target.value + "%"; });
+
+    var renderRow = document.getElementById("renderRow");
+    renderRow.addEventListener("click", function (e) {
+      var b = e.target.closest(".preset"); if (!b) return;
+      state.renderPct = +b.dataset.render;
+      Array.prototype.forEach.call(renderRow.children, function (c) { c.classList.remove("is-active"); });
+      b.classList.add("is-active");
+      document.getElementById("renderNote").textContent =
+        "Render resolution " + state.renderPct + "% — what the game draws before the stream encodes it.";
+    });
   }
 
   /* ---------- metric strip (Streamer-style sparkline cards) ---------- */
@@ -234,7 +244,7 @@
   }
 
   function metricValues(s, ft) {
-    var pixels = Math.pow(state.res / 100, 2);
+    var pixels = Math.pow(state.res / 100, 2) * (state.renderPct / 100);
     return {
       fps: state.hz * (0.98 + rand(Math.floor(performance.now() / 900)) * 0.04),
       stale: ft > s.budget ? (ft - s.budget) * 8 : rand(performance.now() / 700) * 0.4,
