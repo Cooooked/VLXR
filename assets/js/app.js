@@ -495,6 +495,14 @@
         p.classList.toggle("is-active", p.dataset.panel === tab.dataset.tab);
       });
     });
+    tab.addEventListener("keydown", function (e) {
+      var dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      var i = Array.prototype.indexOf.call(tabs, tab);
+      var next = tabs[(i + dir + tabs.length) % tabs.length];
+      next.focus(); next.click();
+    });
   });
 })();
 
