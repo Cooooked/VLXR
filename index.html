@@ -369,7 +369,7 @@
         <button class="diag-tab" data-tab="budget" role="tab" aria-selected="false">Latency</button>
       </div>
       <div class="diag-body">
-      <div class="diag-panel is-active" data-panel="stats">
+      <div class="diag-panel is-active" data-panel="stats" role="tabpanel" aria-label="All stats">
         <div class="stats-mock" aria-label="Live stats readout">
           <div class="stats-row head"><span>METRIC</span><span>VALUE</span><span>NOTE</span></div>
           <div class="stats-row"><span>Target / client FPS</span><b>207 / 206</b><span class="mono-dim">per-second</span></div>
@@ -381,7 +381,7 @@
           <div class="stats-row diag"><span>Diagnostics</span><b>PC pacing p99 is 0.10 ms over budget</b><span class="mono-dim">watch encode load</span></div>
         </div>
       </div>
-      <div class="diag-panel" data-panel="findings">
+      <div class="diag-panel" data-panel="findings" role="tabpanel" aria-label="Diagnostics">
         <ul class="findings">
           <li><b>PC pacing p99 is 0.10 ms over budget</b><span>watch encode load — try a lighter render preset or lower sharpening</span></li>
           <li class="ok"><b>Frame pacing is clean</b><span>99% of frames inside the 4.83 ms budget at 207 Hz</span></li>
@@ -391,7 +391,7 @@
         </ul>
         <p class="mono-dim findings-note">Findings are suggestions only — VLXR never changes your settings on its own.</p>
       </div>
-      <div class="diag-panel" data-panel="charts">
+      <div class="diag-panel" data-panel="charts" role="tabpanel" aria-label="Charts">
         <div class="chart-grid">
           <figure class="chart"><figcaption>Frame interval (ms)</figcaption><div class="bars" aria-hidden="true"><i style="height:62%"></i><i style="height:58%"></i><i style="height:66%"></i><i style="height:55%"></i><i style="height:70%"></i><i style="height:60%"></i><i style="height:64%"></i><i style="height:57%"></i><i style="height:69%"></i><i style="height:61%"></i><i style="height:65%"></i><i style="height:59%"></i></div></figure>
           <figure class="chart"><figcaption>Latency (ms)</figcaption><div class="bars" aria-hidden="true"><i style="height:44%"></i><i style="height:47%"></i><i style="height:45%"></i><i style="height:49%"></i><i style="height:46%"></i><i style="height:48%"></i><i style="height:45%"></i><i style="height:50%"></i><i style="height:47%"></i><i style="height:46%"></i><i style="height:48%"></i><i style="height:45%"></i></div></figure>
@@ -399,7 +399,7 @@
         </div>
         <p class="mono-dim findings-note">Thirteen reorderable charts in the real window — these three show the shape of a healthy 207 Hz session.</p>
       </div>
-      <div class="diag-panel" data-panel="budget">
+      <div class="diag-panel" data-panel="budget" role="tabpanel" aria-label="Latency">
         <p class="budget-title">Where the 27.4 ms goes <span class="mono-dim">— illustrative split of glass-to-glass latency</span></p>
         <div class="budget-bar" role="img" aria-label="Latency budget: game render and submit 8.2 ms, encode queue 1.8 ms, network 2.1 ms, decode 3.4 ms, headset compositor and scanout 11.9 ms">
           <span class="seg s-render" style="width:30%" title="Game render + submit — 8.2 ms"></span>
