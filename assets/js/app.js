@@ -235,6 +235,13 @@
         c.classList.toggle("is-active", on);
         c.setAttribute("aria-pressed", on ? "true" : "false");
       });
+      // quick-setup chips stay lit only while the console exactly matches that preset
+      var KEYS = ["hz","codec","res","renderPct","bitrate","buffering","foveated","brMode","encQuality","sharpening"];
+      Array.prototype.forEach.call(document.getElementById("setupRow").children, function (c) {
+        var p = SETUPS[c.dataset.setup], on = !!p && KEYS.every(function (k) { return state[k] === p[k]; });
+        c.classList.toggle("is-active", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+      });
       document.getElementById("budgetNote").textContent = "Frame budget " + (1000 / state.hz).toFixed(2) + " ms";
       document.getElementById("statusText").textContent = "Active · Quest connected · " + state.hz + " Hz";
     }
