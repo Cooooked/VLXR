@@ -397,3 +397,22 @@
     }).observe(cv);
   }
 })();
+
+/* Diagnostics window — functional tabs (illustrative content). */
+(function () {
+  "use strict";
+  var tabs = document.querySelectorAll(".diag-tab");
+  var panels = document.querySelectorAll(".diag-panel");
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panels.forEach(function (p) {
+        p.classList.toggle("is-active", p.dataset.panel === tab.dataset.tab);
+      });
+    });
+  });
+})();
